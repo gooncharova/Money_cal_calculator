@@ -25,7 +25,7 @@ class Calculator:
         week_period = dt.datetime.now() - dt.timedelta(weeks=1)
         week_date = week_period.date()
         for record in self.records:
-            if record.date in [week_date, today_date]:
+            if week_date < record.date <= today_date:
                 week_sum += record.amount
         return week_sum
 
@@ -69,21 +69,11 @@ class CashCalculator(Calculator):
         else:
             return 'Используйте только rub, usd или eur'
 
-        cash_remained = self.limit/rate - self.get_today_stats()
+        cash_remained = (self.limit - self.get_today_stats())/rate
         if cash_remained > 0:
-            cash_remained = "%.2f" % cash_remained
-            return f"На сегодня осталось {cash_remained} {currency}"
+            return f"На сегодня осталось {round(cash_remained, 2)} {currency}"
         elif cash_remained == 0:
             return "Денег нет, держись"
         else:
             cash_remained = abs(cash_remained)
-            cash_remained = "%.2f" % cash_remained
-            return f"Денег нет, держись: твой долг - {cash_remained} {currency}"
-
-
-cash_calculator = CashCalculator(1000)
-cash_calculator.add_record(Record(amount=1, comment="кофе"))
-# и к этой записи тоже дата должна добавиться автоматически
-cash_calculator.add_record(Record(amount=1, comment="Серёге за обед"))
-
-print(cash_calculator.get_week_stats())
+            return f"Денег нет, держись: твой долг - {round(cash_remained, 2)} {currency}"
