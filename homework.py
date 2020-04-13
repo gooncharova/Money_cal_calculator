@@ -10,8 +10,7 @@ class Calculator:
         self.records.append(record)
 
     def get_today_stats(self):
-        moment = dt.datetime.now()
-        today_date = moment.date()
+        today_date = dt.datetime.now().date()
         day_sum = 0
         for record in self.records:
             if record.date == today_date:
@@ -20,10 +19,8 @@ class Calculator:
 
     def get_week_stats(self):
         week_sum = 0
-        moment = dt.datetime.now()
-        today_date = moment.date()
-        week_period = dt.datetime.now() - dt.timedelta(weeks=1)
-        week_date = week_period.date()
+        today_date = dt.datetime.now().date()
+        week_date = dt.datetime.now().date() - dt.timedelta(weeks=1)
         for record in self.records:
             if week_date < record.date <= today_date:
                 week_sum += record.amount
@@ -44,7 +41,8 @@ class CaloriesCalculator(Calculator):
     def get_calories_remained(self):
         calories_remained = self.limit - self.get_today_stats()
         if calories_remained > 0:
-            return f"Сегодня можно съесть что-нибудь ещё, но с общей калорийностью не более {calories_remained} кКал"
+            return (f'Сегодня можно съесть что-нибудь ещё, но с общей'\
+                    f' калорийностью не более {calories_remained} кКал')
         else:
             return 'Хватит есть!'
 
@@ -71,9 +69,10 @@ class CashCalculator(Calculator):
 
         cash_remained = (self.limit - self.get_today_stats())/rate
         if cash_remained > 0:
-            return f"На сегодня осталось {round(cash_remained, 2)} {currency}"
+            return f'На сегодня осталось {round(cash_remained, 2)} {currency}'
         elif cash_remained == 0:
-            return "Денег нет, держись"
+            return 'Денег нет, держись'
         else:
             cash_remained = abs(cash_remained)
-            return f"Денег нет, держись: твой долг - {round(cash_remained, 2)} {currency}"
+            return f'Денег нет, держись: твой долг -'\
+                   f' {round(cash_remained, 2)} {currency}'
