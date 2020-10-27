@@ -1,2 +1,2 @@
-# hw_python_oop
-Sprint 3. Итоговый проект.
+# money_and_calories_calculator
+Калькулятор денег и калорий, ООП.
